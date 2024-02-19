@@ -1,0 +1,68 @@
+\section{Fundamentals}
+\begin{framed}
+    \textbf{Useful PDFs:} \\
+    \textbf{Normal}:$\frac{\exp \left(-\frac{1}{2}(\vx - \vmu)^T \Sigma^{-1} (\vx - \vmu) \right)}{\sqrt{(2\pi)^k \det{\Sigma}}}$ \\
+    \textbf{Beta}: $\Beta[\theta]{\alpha}{\beta} \propto \theta^{\alpha-1} (1-\theta)^{\beta-1}$ \\
+    \textbf{Laplace}: $\frac{1}{2l}\exp\left(-\frac{\abs{x - \mu}}{l}\right)$
+\end{framed}
+\begin{framed}
+    \textbf{Properties of Expectation:}\\
+    $\E{\mA \rX + \vb} = \mA \E{\rX} + \vb $; $ \E{\rX + \rY} = \E{\rX} + \E{\rY}$ \\
+    $\E{\rX\transpose{\rY}} = \E{\rX} \cdot \transpose{\E{\rY}}$ (if independant)\\
+    $\E{\vg(\rX)} = \int_{\rX(\Omega)} \vg(\vx) \cdot p(\vx) \,d\vx$ (if $\vg$ nice and $\rX$ cont.) \\
+    $\E[\rY]{\E[\rX]{\rX \mid \rY}} = \E{\rX}$ (\textbf{Tower rule})
+\end{framed} 
+Given two random vectors $\rX$ in $\R^n$ and $\rY$ in $\R^m$, their \textbf{covariance} is defined as
+  $\Cov{\rX, \rY} \defeq \E{(\rX - \E{\rX})\transpose{(\rY - \E{\rY})}}$
+We have: $\Cov{\mA\rX + \vc, \mB\rY + \vd} = \mA\Cov{\rX,\rY}\transpose{\mB}$
+\emph{Uncorrelated} if and only if $\Cov{\rX, \rY} = \mzero$.
+The \emph{correlation} of the random vectors $\rX$ and $\rY$ is a normalized covariance: $\Cor{\rX,\rY}(i,j) \defeq \frac{\Cov{X_i,Y_j}}{\sqrt{\Var{X_i} \Var{Y_j}}} \in [-1,1]$\\
+\textbf{Variance}: $\Var{\rX} \defeq \Cov{\rX, \rX}$ \\
+\begin{framed}
+\textbf{Properties of variance}:\\
+$\Var{\mA\rX + \vb} = \mA\Var{\rX}\transpose{\mA}$\\
+$\Var{\rX + \rY} = \Var{\rX} + \Var{\rY} + 2 \Cov{\rX, \rY}$\\
+$\Var{\rX + \rY} = \Var{\rX} + \Var{\rY}$ (if $\rX$, $\rY$ independant)
+$\Var{\rX} = \E[\rY]{\Var[\rX]{\rX \mid \rY}} + \Var[\rY]{\E[\rX]{\rX \mid \rY}}$ (\textbf{Law of total variance, LOTV})
+\end{framed}
+\textbf{Change of variables formula}
+Let $\vg$ be differentiable and invertible. Then for $\rY = \vg(\rX)$ we have $p_\rY(\vy) = p_\rX(\inv{\vg}(\vy)) \cdot \abs{\det{\jac \inv{\vg}(\vy)}}$ where $\jac \inv{\vg}(\vy)$ is the Jacobian of $\inv{\vg}$ evaluated at $\vy$.
+\begin{framed}
+\textbf{Bayes' rule}: 
+$p(\vx \mid \vy) = \frac{p(\vy \mid \vx) \cdot p(\vx)}{p(\vy)}$
+\end{framed}
+\begin{framed}
+    \textbf{Posterior} $p(\vx \mid \vy)$: updated belief about $\vx$ after observing $\vy$. \\
+    \textbf{Prior} $p(\vx)$: initial belief about $\vx$. \\
+    \textbf{Conditional likelihood} $p(\vy \mid \vx)$: how likely the observations $\vy$ are under a given value $\vx$. \\
+    \textbf{Joint likelihood} $p(\vx, \vy) = p(\vy \mid \vx) p(\vx)$ \\
+    \textbf{Marginal likelihood} $p(\vy)$: how likely the observations $\vy$ are across all values of $\vx$. \\
+    \textbf{Marginal likelihood} $p(\vy) = \int_{\rX(\Omega)} p(\vy \mid \vx) \cdot p(\vx) \,d\vx$. 
+\end{framed}
+If prior $p(\vx)$ and posterior $p(\vx \mid \vy)$ from same family of distributions, the prior is a \textbf{conjugate prior} to the likelihood $p(\vy \mid \vx)$. The beta distribution is a conjugate prior to a binomial likelihood. \\
+\begin{framed}
+    \textbf{Marginal and conditional of Normal} \\
+    Let $\rX$ be Gaussian and index sets $\sA, \sB \subseteq [n]$.
+    For any such \textbf{marginal distribution} $\rX_A \sim \N{\vmu_\sA}{\mSigma_{\sA\sA}}$ and that for any such \textbf{conditional distribution}: \\
+    $ \rX_\sA \mid \rX_\sB = \vx_\sB \sim \N{\vmu_{\sA \mid \sB}}{\mSigma_{\sA \mid \sB}}$ where: \\
+        $\vmu_{\sA \mid \sB} \defeq \vmu_\sA + \mSigma_{\sA\sB}\inv{\mSigma_{\sB\sB}}(\vx_\sB - \vmu_\sB)$ and \\
+        $\mSigma_{\sA \mid \sB} \defeq \mSigma_{\sA\sA} - \mSigma_{\sA\sB}\inv{\mSigma_{\sB\sB}}\mSigma_{\sB\sA}$.
+\end{framed}
+\textbf{Maximum likelihood estimate (MLE)}: $\vthetahat_\MLE \defeq$
+ $\underset{\vtheta \in \Theta}{\argmax} p(y_{1:n} \mid \vx_{1:n}, \vtheta) 
+  = \underset{\vtheta \in \Theta}{\argmax} \underbrace{\sum_{i=1}^n \log p(y_i \mid \vx_i, \vtheta)}_{\text{{log-likelihood}}}$ \\
+We will denote the \textbf{negative log-likelihood} by $\ell_\mathrm{nll}(\vtheta; \spD_n)$.
+The MLE is \textbf{consistent} and \textbf{asymptotically normal} if: $\vthetahat_\MLE \convp \opt{\vtheta}$ $\vthetahat_\MLE \convd \N{\opt{\vtheta}}{\mS_n}$ as $n \to \infty$. \\
+The \textbf{{maximum a posteriori estimate} (or MAP estimate)}:   $\vthetahat_\MAP \defeq \argmax_{\vtheta \in \Theta} p(\vtheta \mid \vx_{1:n}, y_{1:n}) 
+  = \argmin_{\vtheta \in \Theta} \underbrace{- \log p(\vtheta)}_{\text{regularization}} + \underbrace{\ell_\mathrm{nll}(\vtheta; \spD_n)}_{\text{quality of fit}}$
+Here, the \textbf{log-prior} $\log p(\vtheta)$ acts as a regularizer.\\
+\begin{framed}
+\textbf{Common regularizers}: \\
+ $p(\vtheta) = \N[\vtheta]{\vzero}{\lambda \mI}$ $\rightarrow$ $-\log p(\vtheta) = \frac{\lambda}{2} \norm{\vtheta}_2^2 + \const$ \\
+ $p(\vtheta) = \Laplace[\vtheta]{\vzero}{\lambda}$ $\rightarrow$ $-\log p(\vtheta) = \lambda \norm{\vtheta}_1 + \const$ \\
+ uniform prior $\rightarrow$ $\const$ (no regularization)
+ \end{framed}
+\begin{framed}
+     \textbf{Expected calibration error}: For $m$ bins: $\ell_{\mathrm{ECE}} \defeq \sum_{m=1}^M \frac{\card{\sB_m}}{n} \abs{\mathrm{freq}(\sB_m) - \mathrm{conf}(\sB_m)}$
+ \end{framed}
+

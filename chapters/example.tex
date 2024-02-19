@@ -1,0 +1,70 @@
+\section{Theory of Convex Functions}
+\Title{Mathematical Background} 
+\textbf{Cauchy-Schwarz Inequality}: $\abs{\uu^T \vv} \leq \norm{\uu} \norm{\vv}$. We have equality if and only if $\uu$ and $\vv$ are colinear. \\
+\textbf{Cosine Theorem}: $2\vv^T \ww = \norm{\vv}^2 + \norm{\ww}^2 - \norm{\vv - \ww}^2$ \\
+The \textbf{spectral norm} of a matrix $A$ is: $\norm{A} := \max_{\vv \in \R^d, \vv \neq 0}{\frac{\norm{A\vv}_2}{\vv}_2} = \max_{\norm{\vv}_2=1}{\norm{A\vv}_2}$. \\
+It follows that $\norm{A \vv}_2 \leq \norm{A} \norm{\vv}_2$ for all $\vv$. \\
+\textbf{Mean value theorem}: Let $a < b$ and $h: [a, b] \rightarrow \R$ be a continuous function which is differentiable on $(a, b)$. Then there exists a $c \in (a, b)$ such that: $h'(c) = \frac{h(b) - h(a)}{b - a}$. \\
+Let $f : \dom(f) \rightarrow \R^m$ where $\dom(f) \subset \R^d$. The function $f$ is called \textbf{differentiable} at $\xx$ if there exists a $(m \times d)$-matrix $A$ and an error function $r : \R^d \rightarrow \R^m$ defined in some neighborhood of $\mathbf{0} \in \R^d$ such that for all $\yy$ in a neighborhood of $\xx$: $f(\yy) = f(\xx) + A(\yy - \xx) + r(\yy - \xx)$ where $\lim_{\vv \rightarrow 0}{\frac{\norm{r(\vv)}}{\norm{v}}} = 0$. $A$ is unique and called the \textbf{jacobian} of $f$ at $\xx$. We denote it $Df(x)$ and have $D f(\xx)_{i, j} = \frac{\partial f_i}{\partial x_j}(\xx)$.\\
+For $m=1$ (i.e $f : \R^d \rightarrow \R)$ we call the jacobian the \textbf{gradient} of $f$ and denote it $\nabla f^T$. Geometrically, this means that the graph of the affine function $f(x) + \nabla f(\xx)^T$ is a tangent hyperplane to the graph of $f$ at $(\xx, f (\xx))$. \\
+\textbf{Chain Rule}: $D(f \circ g)(\xx) = D f(g(\xx)) Dg(\xx)$. \\
+\Title{Convex Sets} 
+A set $C \subset \R^d$ is \textbf{convex} if for any two points $\xx, \yy \in C$ the connecting line segment is in $C$. In formula this means for all $\lambda \in [0, 1]$: $\lambda \xx + (1 - \lambda) \yy \in C$. \\
+\textbf{Intersection of convex sets}: Let $C_i$, $i \in I$ be convex sets, where $I$ is a (possibly infinite) index set. Then $C = \cap_{i \in I}{C_i}$ is a convex set. 
+\begin{framed}
+    \textbf{Mean value inequality}: Let $f : \dom(f) \rightarrow \R^m$ be differentiable, $X \subset \dom(f)$ a convex, nonempty and open set, $B > 0$. The following are equivalent:
+    \begin{enumerate}[label=(\roman*), topsep=0pt,itemsep=0ex,partopsep=0ex,parsep=0ex]   
+        \itemsep0em
+        \item $f$ is $B$-Lipschitz: $\forall \xx, \yy \in X : \norm{f(\xx) - f(\yy)} \leq B \norm{\xx - \yy}$
+        \item $f$ has differentials bounded by $B$ (in spectral norm): $\forall \xx \in X: \norm{D f(\xx)} \leq B$.
+    \end{enumerate}
+    (ii) $\implies$ (i) even if $X$ is not open.
+\end{framed}
+\Title{Convex functions} 
+\begin{framed}
+    A function $f$ as above is said to be \textbf{convex} if $\dom(f)$ is convex and for all $\xx, \yy \in \dom(f)$ and $\lambda \in [0, 1]$ we have: $f(\lambda \xx + (1 - \lambda)\yy) \leq \lambda f(\xx) + (1 - \lambda) f(\yy)$.   
+\end{framed}
+While the graph of $f$ is the set $\{(\xx, f (\xx)) \in \R^{d+1} : \xx \in \dom(f)\}$, the \textbf{epigraph} is the set of points above the graph, $\textbf{epi}(f) := \{(\xx, \alpha) \in \R^{d+1} : \xx \in \dom(f), \alpha \geq f(\xx)\}$. $f$ is a convex function if and only if $\textbf{epi}(f)$ is a convex set. \\
+\textbf{Jensen's inequality} Let $f : \R^d \rightarrow \R$ be a convex function, $\xx_1, \dots, \xx_n \in \dom(f)$ and $\lambda_1, \dots, \lambda_m \in \R_{+}$ such that $\sum_{i=1}^n{\lambda_i}=1$, then: $f\left(\sum_{i=1}^m{\lambda_i x\xx_i} \right) \leq \sum_{i=1}^n{\lambda_i f(\xx_i)}$. \\
+If $f$ is convex and $\dom(f)$ is open then $f$ is continuous.\\
+\begin{framed}
+    \textbf{First-order characterization of convexity} Let $\dom(f)$ be open and $f$ differentiable then $f$ is convex if and only if $\dom(f)$ is convex and $f(\yy) \geq f(\xx) + \nabla f(\xx)^T (\yy - \xx)$. Geometrically, this means that for all $\xx \in \dom(f)$, the graph of $f$ lies above its tangent hyperplane at the point $(\xx, f(\xx))$.
+\end{framed}
+\textbf{Monotonicity of the gradient}: Suppose that $\dom(f)$ is open and that $f$ is differentiable. Then $f$ is convex if and only if $\dom(f)$ is convex and $(\nabla f(\yy) - \nabla f(\xx))^T (\yy - \xx) \geq 0$ holds for all $\xx, \yy \in \dom(f)$.
+\begin{framed}
+    \textbf{Second-order characterization of convexity} Suppose that $\dom(f)$ is open and that $f$ is twice differentiable; in particular, the Hessian (matrix of second partial derivatives) exists at every point $\xx \in \dom(f)$ and is symmetric. Then $f$ is convex if and only if $\dom(f)$ is convex, and for all $\xx \in \dom(f)$, we have $\nabla^2 f(\xx) \succcurlyeq 0$ (psd).
+\end{framed}
+\textbf{Operations that preserve convexity}: Let $f_1, \dots, f_n$ be convex functions and $\lambda_1, \dots, \lambda_n \in \R_{+}$. Then $f := \max_{i=1}^m{f_i}$ and $f := \sum_{i=1}^n{\lambda_i f_i}$ are convex on $\dom(f) = \cap_{i=1}^n{\dom(f_i)}$. Furthermore let $f$ be convex with $\dom(f) \subset \R^d$ and $g : \R^m \rightarrow \R^d$ be an affine function (i.e. $g(\xx) = A \xx + \bb$. Then $f \circ g$ is convex on $\dom(f \circ g) = \{ \xx \in \R^m : g(\xx) \in  \dom(f)\}$.\\
+\Title{Minimizing convex functions} 
+A \textbf{local minimum} of $f: \dom(f) \rightarrow \R$ is a point $\xx$ such that there exists $\epsilon > 0$ with: $f(\xx) \leq f(\yy)$ for all $\yy \in \dom(f)$ with $\norm{\yy - \xx} < \epsilon$. \\
+Let $x^*$ be a local minimum of a convex function $f : \dom(f) \rightarrow \R$. Then $x^*$ is a global minimum, meaning that $f (x^*) \leq f(y) \forall y \in \dom(f)$. \\
+Suppose that $f : \dom(f) \rightarrow \R$ is convex and differentiable over an open domain $\dom(f) \subset \R^d$. Let $x \in \dom(f)$. If $\nabla f(\xx) = 0$, then $\xx$ is a global minimum. \\
+Suppose that $f : \dom(f) \rightarrow \R$ is differentiable over an open domain $\dom(f) \subset \R^d$ . Let $\xx \in \dom(f)$. If $\xx$ is a global minimum then $\nabla f(\xx) = 0$. \\
+\Title{Strictly convex functions} 
+A function $f : \dom(f) \rightarrow \R$ is \textbf{strictly convex} if $\dom(f)$ is convex and for all $\xx \neq \yy \in \dom(f)$ and all $\lambda \in (0, 1)$, we have $f(\lambda \xx + (1 - \lambda)\yy) < \lambda f(\xx) + (1 - \lambda) f(\yy)$. \\
+Suppose that $\dom(f)$ is open and that $f$ is twice continuously differentiable. If the Hessian $\nabla^2 f(\xx) \succ 0$ for every $\xx \in \dom(f)$, then $f$ is strictly convex. \\
+Let $f : \dom(f) \rightarrow \R$ be strictly convex then $f$ has at most one global minimum. \\
+\Title{Constrained Minimization} 
+Let $f : \dom(f) \rightarrow \R$ be convex and $X \subset \dom(f)$ be a convex set. A point $\xx$ is a \textbf{minimizer} of $f$ over $X$ if $f(\xx) \leq f(\yy), \forall \yy \in X$. \\
+Suppose that $f : \dom(f) \rightarrow \R$ is convex and differentiable over an open domain $\dom(f) \subset \R^d$, and let $X \subset \dom(f)$ be a convex set. A point $\xx^* \in X$ is a minimizer if and only if $\forall \xx \in X : \nabla f(\xx^*)^T (\xx - \xx^*) \geq 0$.
+\Title{Existence of a minimizer}
+Let $f : \R^d \rightarrow \R$ and $\alpha \in \R$. The set $f^{\leq \alpha} := \{\xx \in \R^d: f(\xx) \leq \alpha\}$ is the \textbf{$\alpha$-sublevel set} of $f$. \\
+\textbf{Weierstrass Theorem}: Let  $f : \R^d \rightarrow \R$ be a continuous function and suppose there is a non-empty and bounded sublevel set $f^{\leq \alpha}$. Then $f$ has a global minimum. \\
+\Title{Convex programming}
+An \textbf{optimization problem} in standard form is given by: 
+\begin{align*}
+    \text{minimize }   &f_0(\xx) \\
+    \text{subject to } &f_i(\xx) \leq 0, i=1, \dots m \\
+                       &h_i(\xx) = 0 i=1, \dots, p
+\end{align*}
+A \textbf{convex program} arises when the $f_i$ are convex functions and the $h_i$ are affine functions with domain $\R^d$. We call the region $X = \{\xx \in \R^d : f_i(\xx)\leq 0, i=1, \dots, m; h_i(\xx) =0, i=1, \dots p\}$ the \textbf{feasible region}, in this case it is a convex set. \\
+The \textbf{Lagrangian} is the functional $L : \mathcal{D} \times \R^m \rightarrow \R$ given by: $L(\xx, \mathbb{\lambda}, \mathbb{\nu}) = f_0(\xx) + \sum_{i=1}^m{\lambda_i f_i(\xx)} + \sum_{i=1}^p{\nu_i h_i(\xx)}$. We call the $\lambda_i, \nu_i$ are called \textbf{Lagrange multipliers}. The Lagrange \textbf{dual function} is $g : \R^m \times \R^p \rightarrow \R \cup \{- \infty\}$ defined by $g(\mathbb{\lambda}, \mathbb{\nu}) = \inf_{\xx \in D} L(\xx, \mathbb{\lambda}, \mathbb{\nu})$. \\
+\textbf{Weak duality} If $\xx$ is a feasible solution then $g(\mathbb{\lambda}, \mathbb{\nu}) \leq f_0(\xx)$, for all $\mathbb{\lambda} \in \R^m, \mathbb{\nu} \in \R^p$ with $\mathbb{\lambda} \geq 0$. \\
+The \textbf{Lagrangian dual problem} is given by:
+\begin{align*}
+    \text{maximize }   g(\mathbb{\lambda}, \mathbb{\nu}) && \text{subject to }  \mathbb{\lambda} \geq 0
+\end{align*}
+The equivalent minimization is always a convex program (even if the original program was not). \\
+\textbf{Slaters Condition}: If there is a Slater's point $\Tilde{\xx}$ (a point which satisfies all inequality constraints of the original program strictly), then the infimum value of the primal equals the supremum value of its Lagrange dual. Moreover, if this value is finite, it is attained by a feasible solution of the dual. This is called \textbf{strong duality}. \\
+\textbf{Karush-Kuhn-Tucker necessary conditions} Let $\Tilde{\xx}$ and $(\Tilde{\mathbb{\lambda}}, \Tilde{\mathbb{\nu}})$ be feasible solutions of the primal optimization problem and its Lagrangian dual repectively with zero duality gap. If all $f_i$ and $h_i$ are differentiable then: $\Tilde{\lambda}_i f_i(\Tilde{\xx}) = 0 $ for $i=1, \dots, m$ and $\nabla f_0(\Tilde{\xx}) + \sum_{i=1}^m{\Tilde{\lambda}_i \nabla f_i(\Tilde{\xx})} + \sum_{i=1}^p{\Tilde{\nu}_i \nabla h_i(\Tilde{\xx})} = 0$. \\
+\textbf{Karush-Kuhn-Tucker sufficient conditions} The KKT necessary conditions are sufficient to ensure strong duality if all $f_i, h_i$ are differentiable and the $f_i$ are convex and the $h_i$ affine.

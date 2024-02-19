@@ -1,0 +1,145 @@
+\documentclass[11pt,landscape, a4paper]{extarticle}
+\usepackage{multicol}
+\usepackage{calc}
+\usepackage{xspace}
+\usepackage{xparse}
+\usepackage[usenames,dvipsnames]{xcolor} 
+\usepackage{ifthen}
+\usepackage[landscape]{geometry}
+\usepackage{hyperref}
+\usepackage{tikz}
+\usepackage{polynom}
+\usepackage{pifont}
+\usepackage{amssymb}
+\usepackage{setspace}
+\usepackage{dsfont}
+\usepackage[italic]{derivative}
+% my packages:
+\usepackage{amsmath,amsfonts,amsthm,amssymb,mathrsfs,bbm,mathtools,nicefrac}\usepackage{tcolorbox}
+\usepackage[utf8]{inputenc}
+\usepackage{enumitem}
+\usepackage{wrapfig}
+%framed boxes
+\usepackage{mdframed}
+\usepackage{array}
+\usepackage{tcolorbox}
+\usepackage{accents}
+\usepackage{titlesec}
+\usepackage{etoolbox}
+\usepackage[extreme]{savetrees}
+\usepackage{wrapfig}
+%for images
+\usepackage{graphicx}
+\geometry{a4paper, layouthoffset=0mm, margin=0mm, layoutsize={297mm, 210mm}}
+
+\input{commands}
+
+% Turn off header and footer
+\pagestyle{plain}
+% Turn off page numbering
+\pagenumbering{gobble}
+
+% Redefine section commands to use less space
+\titleformat{name=\section}[block]
+  {\sffamily\scriptsize}
+  {}
+  {0pt}
+  {\colorsection}
+\titlespacing*{\section}{0mm}{-1mm}{-1mm}
+%\makeatletter
+
+\newcommand{\colorsection}[1]{%
+  \colorbox{blue!20}{{\thesection\ #1}}}
+
+%\renewcommand{\section}{\@startsection{section}{1}{0mm}%
+                                %{-1ex plus -.5ex minus -.2ex}%
+                                %{0.5ex plus .2ex}%x
+                                %{\normalfont\small\bfseries}}
+%\makeatother
+
+% Don't print section numbers
+\setcounter{secnumdepth}{1}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+% define box
+\tikzstyle{fancytitle} =[fill=black, text=white, font=\footnotesize\bfseries]
+
+\definecolor{light}{rgb}{0.5, 0.5, 0.5}
+\definecolor{background_color}{HTML}{7D98A1}
+\def\light#1{{\color{light}#1}}
+
+% -----------------------------------------------------------------------
+\setstretch{-0.6} %Line spacing
+\makeatletter
+\patchcmd\set@fontsize{#3}{#2}{}{}
+\makeatother
+\begin{document}
+\raggedright
+\footnotesize
+\setlength{\columnseprule}{0.25pt}
+\setlength{\premulticols}{1pt}
+\setlength{\postmulticols}{1pt}
+\setlength{\multicolsep}{-1cm}
+\setlength{\columnsep}{1mm}
+\begin{multicols*}{5}
+
+% multicol parameters
+% These lengths are set only within the two main columns
+
+
+
+% main heading
+\begin{center}
+	\Large{\textbf{Probablistic AI}} \\
+\end{center}
+\vspace{-4mm}
+\newcommand\Reihe{\sum_{k = 1}^{\infty}}
+
+\newcommand\Ib{\overline{I}}
+
+\newcommand*\diff{\mathop{}\!\mathrm{d}}
+
+\newcommand\Title[1]{\vspace{.1mm}\begin{tikzpicture} \node[fancytitle, right=10pt, fill=gray] {#1}; \end{tikzpicture}}
+
+%\everymath{\color{PineGreen}}
+\definecolor{math}{HTML}{0047AB}
+\everymath{\color{math}}
+\newcommand{\ubar}[1]{\underaccent{\bar}{#1}}
+
+%\renewcommand{\(}{\relax\ifmmode\@badmath\else\color{blue}$\fi}
+%\renewcommand{\)}{\relax\ifmmode\ifinner$\color{black}\else\@badmath\fi\else \@badmath\fi }
+%\catcode`\$=13
+%\def${\ifmmode)\xspace\else(\fi} 
+%\makeatother
+
+\scriptsize
+
+\newenvironment{framed}
+{\vspace{0.5mm}\begin{tcolorbox}[colback=background_color!15!white,
+                   colframe=black, 
+                   boxrule=0.3pt,
+                   enlarge top by=0cm, 
+                   enlarge bottom by=0cm, 
+                   enlarge left by=0cm,
+                   left=6pt,
+                   right=6pt,
+                   boxsep=-2mm]}
+		{\end{tcolorbox}\vspace{0.5mm}}
+
+% _____ BEGINNING OF DOCUMENT __________________________________________________
+
+\input{chapters/01_Fundamentals}
+\input{chapters/02_Bayesian_Linear_Regression}
+\input{chapters/04_Gaussian_Processes}
+\input{chapters/05_Variantional_Inference}
+\input{chapters/06_Markov_Chains}
+\input{chapters/07_Bayesian_Deep_Learning}
+\input{chapters/08_Active_Learning}
+\input{chapters/09_Bayesian_Optimization}
+\input{chapters/10_Markov_Decision_Processes}
+\input{chapters/11_Tabular_Reinforcement_Learning}
+\input{chapters/12_Model-free_Reinforcement_Learning}
+\input{chapters/13_Model-based_Reinforcement_Learning}
+\end{multicols*}
+\end{document}
