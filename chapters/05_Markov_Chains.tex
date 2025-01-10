@@ -3,9 +3,9 @@
     A \textbf{Markov Chain} over $\sS \defeq \{0, \dots, n-1\}$, is a sequence $(X_t)_{t \in \Nat_0} \in \sS$, such that the \textbf{Markov property}: $X_{t+1} \perp X_{0:t-1} \mid X_t$ is satisfied. 
 \end{framed}
 It is \textbf{time-homogeneous} if there is a \textbf{transition function}: $p(x' \mid x) \defeq \Pr{X_{t+1} = x' \mid X_t = x}$, with \textbf{transition matrix} as $\left(x_j \mid x_i \right)_{i, j = 1}^n$. Each row sums up to 1. \\
-The state of a MC at $t$ is a probability distribution $\vq_t \in \in \R^{1 \times \card{\sS}}$. We can write: $\vq_{t+k} = \vq_t \mP^k$.
+The state of a MC at $t$ is a probability distribution $\vq_t \in \R^{1 \times \card{\sS}}$. We can write: $\vq_{t+k} = \vq_t \mP^k$.
 \begin{framed}
-    A distribution $\pi$ is \textbf{stationary} iff\\ $\pi(x) = \sum_{x' \in S} p(x \mid x') \pi(x')$ equivalently $\vpi = \vpi \mP$.
+    A distribution $\pi$ is \textbf{stationary} iff\\ $\pi(x) = \sum_{x' \in S} p(x \mid x') \pi(x')$ equivalently $\vpi = \vpi \mP$
 \end{framed}
 A MC is \textbf{irreducible} if every state is reachable from any state with positive probability.
 \begin{framed}
@@ -22,10 +22,10 @@ Irreducible MC $\rightarrow$ ergodic MC use: $\mP' = \frac{1}{2}\mP + \frac{1}{2
 \end{framed}
 If MC is reversible w.r.t. $\pi$, then $\pi$ is a stat. dist.
 \begin{framed}
-    \textbf{Ergodic theorem} For an ergodic MC and a stat. dist. $\pi$ as well as $f : \sS \to \R$:
+    \textbf{Ergodic theorem} For an ergodic MC with stationary dist. $\pi$ and $f : \sS \to \R$: \\
     $\frac{1}{n} \sum_{i=1}^n f(x_i) \almostsurely \sum_{x \in S} \pi(x) f(x) = \E[x \sim \pi]{f(x)}$, for $n\to\infty$ where $x_i \sim X_i \mid x_{i-1}$.
 \end{framed}
-\textbf{Acceptance distribution (Metropolis-Hastings)}: $\Bern{\alpha(\vxp \mid \vx)}$ where $\alpha(\vxp \mid \vx) \defeq \min \braces*{1, \frac{q(\vxp) r(\vx \mid \vxp)}{q(\vx) r(\vxp \mid \vx)}}$ to decide whether to follow the proposal yields a Markov chain with stationary distribution $p(\vx) = \frac{1}{Z} q(\vx)$.
+\textbf{Acceptance distribution (Metropolis-Hastings)}: $\Bern{\alpha(\vxp \mid \vx)}$ where $\alpha(\vxp \mid \vx) \defeq \min \braces*{1, \frac{q(\vxp) r(\vx \mid \vxp)}{q(\vx) r(\vxp \mid \vx)}}$ yields a Markov chain with stationary distribution $p(\vx) = \frac{1}{Z} q(\vx)$.
 \includegraphics[width=0.98\linewidth, trim={0 0 5cm 0}]{images/Metropiolis_Hasting.png}
 \includegraphics[width=0.98\linewidth]{images/Gibbs_Sampling.png} 
 The stationary distribution of the simulated Markov chain is $p(\vx)$.

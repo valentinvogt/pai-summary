@@ -7,33 +7,45 @@ $r$ induces a sequence of rewards: $R_t \defeq r(X_t, A_t)$.
     A \textbf{policy} is a function that maps each state $x \in \sX$ to a probability distribution over the actions. That is, for any $t > 0$: $\pi(a \mid x) \defeq \Pr{A_t = a \mid X_t = x}$.
 \end{framed}
 A policy induces a MC $(X_t^\pi)_{t\in\Nat_0}$: $p^\pi(x' \mid x) \defeq \Pr{X_{t+1}^\pi = x' \mid X_t^\pi = x} = \sum_{a \in \sA} \pi(a \mid x) p(x' \mid x, a)$.\\
-The \textbf{discounted payoff} from time $t$ is: $G_t \defeq \sum_{m=0}^\infty \gamma^m R_{t+m}$, for $\gamma \in [0, 1)$, the \textbf{discount factor}.
+The \textbf{discounted payoff} from time $t$ given discount factor $\gamma \in [0, 1)$ is\\
+ $G_t \defeq \sum_{m=0}^\infty \gamma^m R_{t+m}$
 \begin{framed}
     The \textbf{state value function}: $\E[\pi]{\cdot} \defeq \E[(X_t^\pi)_{t\in\Nat_0}]{\cdot}$ measures the average discounted payoff from time $t$ starting from state $x \in \sX$.
 \end{framed}
 \begin{framed}
-    The \textbf{state-action value function (Q-function)}: $\q[\pi]{x}{a}[t] \defeq \E[\pi]{G_t \mid X_t = x, A_t = a} = r(x, a) + \gamma \sum_{x' \in \sX} p(x' \mid x, a) \cdot \v[\pi]{x'}[t+1]$ measures the average discounted payoff from time $t$ starting from state $x \in \sX$ and with playing action $a \in \sA$.
+    The \textbf{state-action value function q}: \\
+    $\q[\pi]{x}{a}[t] \defeq \E[\pi]{G_t \mid X_t = x, A_t = a}$ \\
+    $ = r(x, a) + \gamma \sum_{x' \in \sX} p(x' \mid x, a) \cdot \v[\pi]{x'}[t+1]$ measures the average discounted payoff from time $t$ starting from state $x \in \sX$ and with playing action $a \in \sA$.
 \end{framed}
 \begin{framed}
-    \textbf{Bellman Expectation Equation}: $\v[\pi]{x} = r(x, \pi(x)) + \gamma \E[x' \mid x, \pi(x)]{\v[\pi]{x'}}$, if stochastic policy: $\v[\pi]{x} = \E[a \sim \pi(x)]{\q[\pi]{x}{a}}$. Also get: $\q[\pi]{x}{a} = r(x, a) + \gamma \E*[x' \mid x, a]{\E[a' \sim \pi(x')]{\q[\pi]{x'}{a'}}}$. For deterministic: $\v[\pi]{x} = \q[\pi]{x}{\pi(x)}$.
+    \textbf{Bellman Expectation Equation}\\
+    $\v[\pi]{x} = r(x, \pi(x)) + \gamma \E[x' \mid x, \pi(x)]{\v[\pi]{x'}}$ \\
+    For stochastic policy: $\v[\pi]{x} = \E[a \sim \pi(x)]{\q[\pi]{x}{a}}$ \\
+    $\q[\pi]{x}{a} = r(x, a) + \gamma \E*[x' \mid x, a]{\E[a' \sim \pi(x')]{\q[\pi]{x'}{a'}}}$.\\
+    For deterministic: $\v[\pi]{x} = \q[\pi]{x}{\pi(x)}$.
 \end{framed}
 Can be used to find $\fnv[\pi]$ given policy $\pi$, by solving linear system of equations in cubic time in the size of the state space. Can also be solved using fixed point iteration: $\mB^\pi \vv \defeq \vr^\pi + \gamma \mP^\pi \vv$.
 \begin{framed}
-    A \textbf{greedy policy} w.r.t. to a state-action value function $\fnq$ is $pi_{\fnq}(x) \defeq \argmax_{a \in \sA} \q{x}{a}$; a \textbf{greedy policy} w.r.t. a state value function $\fnv$ is: $\pi_{\fnv}(x) \defeq \argmax_{a \in \sA} r(x, a) + \gamma \sum_{x' \in \sX} p(x' \mid x, a) \cdot \v{x'}$.
+    \textbf{Greedy policies} \\
+    Greedy w.r.t. to state-action value function $\fnq$: is $\pi_{\fnq}(x) \defeq \argmax_{a \in \sA} \q{x}{a}$;\\
+    Greedy w.r.t. a state value function $\fnv$ is: \\
+    $\pi_{\fnv}(x) \defeq \argmax_{a \in \sA} r(x, a)$ \\
+    $ \quad+ \gamma \sum_{x' \in \sX} p(x' \mid x, a) \cdot \v{x'}$.
+    \vspace{2mm}
 \end{framed}
 \begin{framed}
     \textbf{Bellman's Theorem}: A policy $\pis$ is optimal iff it is greedy with respect to its own value function. In other words, $\pis$ is optimal iff $\pis(x)$ is a distribution over the set $\argmax_{a \in \sA} \q*{x}{a}$.
 \end{framed}
-If or every state there is a unique action that maximizes the state-action value function, the policy $\pis$ is deterministic and unique, $\pis(x) = \argmax_{a \in \sA} \q*{x}{a}$.
-\includegraphics[width=\linewidth, trim={0 0 3cm 0}]{images/Policy_Iteration.png}
+If for every state there is a unique action that maximizes $q$, $\pis(x) = \argmax_{a \in \sA} \q*{x}{a}$ is deterministic and unique.
+\includegraphics[width=0.9\linewidth]{images/Policy_Iteration.png}
 For finite Markov decision processes, policy iteration converges to an optimal policy.
-\includegraphics[width=\linewidth, trim={0 0 3cm 0}]{images/Value_Iteration.png}
-Value iteration converges to an optimal policy, as $\fnv[\star]$ and $\fnq[\star]$ are a fixed-points of the Bellman update $\mBs$.
+\includegraphics[width=0.9\linewidth]{images/Value_Iteration.png}
+Value iteration converges to an optimal policy, as $\fnv[\star]$ and $\fnq[\star]$ are fixed-points of the Bellman update $\mBs$.
 \begin{framed}
     A \textbf{Partially observable Markov decision process (POMDP)} is a Markov process, with a set of supplementary \textbf{observations} $\sY$, and \textbf{observation probabilities} $o(y \mid x) \defeq \Pr{Y_t = y \mid X_t = x}$.
 \end{framed}
-POMDP are hard to solve in general, but can be reduced to MDP with an enlarged state space. We consider MDP whose state are \textbf{beliefs}: $b_t(x) \defeq \Pr{X_t = x \mid y_{1:t}, a_{1:t-1}}$. Keeping track of how beliefs change over time is \textbf{Bayesian filtering}: Given a prior belief $b_t$, an action taken $a_t$, and a new observation $y_{t+1}$, the belief state can be updated as: $b_{t+1}(x) = \Pr{X_{t+1} = x \mid y_{1:t+1}, a_{1:t}} = \frac{1}{Z} o(y_{t+1} \mid x) \sum_{x' \in \sX} p(x \mid x', a_t) b_t(x')$, where $Z \defeq \sum_{x \in \sX} o(y_{t+1} \mid x) \sum_{x' \in \sX} p(x \mid x', a_t) b_t(x')$.
-The sequence of belief-states defines the sequence of random variables $(B_t)_{t\in\Nat_0}$:$ B_t \defeq X_t \mid y_{1:t}, a_{1:t-1}$, where the (state-)space of all beliefs is the (infinite) space of all probability distributions over $\sX$: $\spB \defeq \Delta^{\sX} \defeq \braces*{\vb \in \R^{\card{\sX}} : \vb \geq \vzero, \textstyle\sum_{i=1}^{\card{\sX}} \vb(i) = 1}$.
+Reduce POMDP to MDP with enlarged state space. We consider MDP whose states are \textbf{beliefs}: $b_t(x) \defeq \Pr{X_t = x \mid y_{1:t}, a_{1:t-1}}$. Keeping track of how beliefs change over time is \textbf{Bayesian filtering}: Given a prior belief $b_t$, an action taken $a_t$, and a new observation $y_{t+1}$, the belief state can be updated as: $b_{t+1}(x) = \Pr{X_{t+1} = x \mid y_{1:t+1}, a_{1:t}} = \frac{1}{Z} o(y_{t+1} \mid x) \sum_{x' \in \sX} p(x \mid x', a_t) b_t(x')$, where $Z \defeq \sum_{x \in \sX} o(y_{t+1} \mid x) \sum_{x' \in \sX} p(x \mid x', a_t) b_t(x')$.
+The sequence of belief-states defines the sequence of RVs $(B_t)_{t\in\Nat_0}$:$ B_t \defeq X_t \mid y_{1:t}, a_{1:t-1}$, where the (state--)space of all beliefs is the (infinite) space of all probability distributions over $\sX$: $\spB \defeq \Delta^{\sX} \defeq \braces*{\vb \in \R^{\card{\sX}} : \vb \geq \vzero, \textstyle\sum_{i=1}^{\card{\sX}} \vb(i) = 1}$.
 \begin{framed}
     Given a POMDP, the corresponding \textbf{Belief-state Markov decision process} is a Markov decision process specified by the \textbf{belief space} $\spB \defeq \Delta^{\sX}$ depending on the \textbf{hidden states} $\sX$; the set of \textbf{actions} $\sA$; \textbf{transition probabilities} $\tau(b' \mid b, a) \defeq \Pr{B_{t+1} = b' \mid B_t = b, A_t = a}$; and \textbf{rewards} $\rho(b, a) \defeq \E[x \sim b]{r(x, a)} = \sum_{x \in \sX} b(x) r(x, a)$.
 \end{framed}

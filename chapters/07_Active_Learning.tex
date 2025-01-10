@@ -1,7 +1,9 @@
 \section{Active Learning}
 \begin{framed}
-    \textbf{Conditional Entropy}: $\H{\rX \mid \rY} \defeq \E[\vy \sim p(\vy)]{\H{\rX \mid \rY = \vy}} \\= \E[(\vx, \vy) \sim p(\vx, \vy)]{- \log p(\vx \mid \vy)}$ \\
-    \textbf{Joint entropy}: $\H{\rX, \rY} \defeq \E[(\vx, \vy) \sim p(\vx, \vy)]{- \log p(\vx, \vy)}$ 
+    \textbf{Conditional Entropy}: \\
+    $\H{\rX \mid \rY} \defeq \E[\vy \sim p(\vy)]{\H{\rX \mid \rY = \vy}} \\= \E[(\vx, \vy) \sim p(\vx, \vy)]{- \log p(\vx \mid \vy)}$ \\
+    \textbf{Joint entropy}: \\
+    $\H{\rX, \rY} \defeq \E[(\vx, \vy) \sim p(\vx, \vy)]{- \log p(\vx, \vy)}$ 
     \vspace{1mm}
 \end{framed}
 \begin{framed}
@@ -10,16 +12,17 @@
     $\H{\rX \mid \rY} \leq \H{\rX}$ (Information never hurts)
 \end{framed}
 \begin{framed}
-    \textbf{Mutual Information}: $\I{\rX}{\rY} \defeq \H{\rX} + \H{\rY} - \H{\rX, \rY}$
+    \textbf{Mutual Info.}: $\I{\rX}{\rY} \defeq \H{\rX} + \H{\rY} - \H{\rX, \rY}$
 \end{framed}
 Have: $\I{\rX}{\rY} = \E[\vy \sim p]{\KL{p(\vx \mid \vy)}{p(\vx)}}$. \\
 \textbf{Conditional mutual information}: $\I{\rX}{\rY}[\rZ] = \H{\rX \mid \rZ} - \H{\rX \mid \rY, \rZ}$. \\
-Given a (discrete) function $F : \pset{\spX} \to \R$, the \textbf{marginal gain} of $\vx \in \spX$ given $\sA \subseteq \spX$ is defined as $\Delta_F(\vx \mid \sA) \defeq F(\sA \cup \{\vx\}) - F(\sA)$. The function is called \textbf{submodular} iff for any $\vx \in \spX$ and any $\sA \subseteq \sB \subseteq \spX$ it satisfies $F(\sA \cup \{\vx\}) - F(\sA) \geq F(\sB \cup \{\vx\}) - F(\sB)$, it is called \textbf{monotone} it satisfies $F(\sA) \leq F(\sB)$. \\
+Given a (discrete) function $F : \pset{\spX} \to \R$, the \textbf{marginal gain} of $\vx \in \spX$ given $\sA \subseteq \spX$ is defined as $\Delta_F(\vx \mid \sA) \defeq F(\sA \cup \{\vx\}) - F(\sA)$. 
+The function is called \textbf{submodular} iff for any $\vx \in \spX$, any $\sA \subseteq \sB \subseteq \spX$ it satisfies $F(\sA \cup \{\vx\}) - F(\sA) \geq F(\sB \cup \{\vx\}) - F(\sB)$. It is \textbf{monotone} if $F(\sA) \leq F(\sB)$. \\
 \begin{framed}
     \textbf{Maximization objective}: monotone submodular function: \\ $I(\sS) \defeq \I{\vf_\sS}{\vy_\sS} = \H{\vf_\sS} - \H{\vf_\sS \mid \vy_\sS}$.
 \end{framed}
 \textbf{Greedy}: Pick the locations $\vx_1$ through $\vx_n$ individually by greedily finding the location with the maximal mutual information, this provides a $(1 - \nicefrac{1}{e})$-approximation of the optimum. \\
 \textbf{Uncertainty sampling}: Have already picked $\sS_t = \{\vx_1, \dots, \vx_t\}$; Solve the following: $\vx_{t+1} \defeq \argmax_{\vx \in \spX} \Delta_I(\vx \mid \sS_t) = \argmax_{\vx \in \spX} \Ism{f_\vx}{y_{\vx} \mid \vy_{\sS_t}}$. Does not work with heteroscedastic noise: large aleatoric uncertainty may dominate the epistemic uncertainty. In classification corresponds to selecting the label that maximizes the entropy of the predicted label: $\vx_{t+1} \defeq \argmax_{\vx \in \spX} \H{y_{\vx} \mid \vx_{1:t}, y_{1:t}}$. \\
 \begin{framed}
-    \textbf{Bayesian active learning by disagreement (BALD)}: This identifies those points $\vx$ where the models \emph{disagree} about the label $y_{\vx}$ (that is, each model is ``confident'' but the models predict different labels): $\vx_{t+1} \defeq \argmax_{\vx \in \spX} \I{\vtheta}{y_{\vx} \mid \vx_{1:t}, y_{1:t}} = \argmax_{\vx \in \spX} \H{y_{\vx} \mid \vx_{1:t}, y_{1:t}} - \E*[\vtheta \mid \vx_{1:t}, y_{1:t}]{\H{y_{\vx} \mid \vtheta}}$ 
+    \textbf{Bayesian active learning by disagreement (BALD)}: Identify points $\vx$ where models \emph{disagree} about the label $y_{\vx}$ (each model is ``confident'' but models predict different labels): $\vx_{t+1} \defeq \argmax_{\vx \in \spX} \I{\vtheta}{y_{\vx} \mid \vx_{1:t}, y_{1:t}} = \argmax_{\vx \in \spX} \H{y_{\vx} \mid \vx_{1:t}, y_{1:t}} - \E*[\vtheta \mid \vx_{1:t}, y_{1:t}]{\H{y_{\vx} \mid \vtheta}}$ 
 \end{framed}

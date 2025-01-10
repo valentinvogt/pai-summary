@@ -12,11 +12,12 @@
     $\E{\vg(\rX)} = \int_{\rX(\Omega)} \vg(\vx) \cdot p(\vx) \,d\vx$ (if $\vg$ nice and $\rX$ cont.) \\
     $\E[\rY]{\E[\rX]{\rX \mid \rY}} = \E{\rX}$ (\textbf{Tower rule})
 \end{framed} 
-Given two random vectors $\rX$ in $\R^n$ and $\rY$ in $\R^m$, their \textbf{covariance} is defined as
-  $\Cov{\rX, \rY} \defeq \E{(\rX - \E{\rX})\transpose{(\rY - \E{\rY})}}$
-We have: $\Cov{\mA\rX + \vc, \mB\rY + \vd} = \mA\Cov{\rX,\rY}\transpose{\mB}$
-\emph{Uncorrelated} if and only if $\Cov{\rX, \rY} = \mzero$.
-The \emph{correlation} of the random vectors $\rX$ and $\rY$ is a normalized covariance: $\Cor{\rX,\rY}(i,j) \defeq \frac{\Cov{X_i,Y_j}}{\sqrt{\Var{X_i} \Var{Y_j}}} \in [-1,1]$\\
+Given two RVs $\rX\in\R^n$ and $\rY\in\R^m$, \\ their \textbf{covariance} is defined as \\
+$\Cov{\rX, \rY} \defeq \E{(\rX - \E{\rX})\transpose{(\rY - \E{\rY})}}$ \\
+$\Cov{\mA\rX + \vc, \mB\rY + \vd} = \mA\Cov{\rX,\rY}\transpose{\mB}$ \\
+\emph{Uncorrelated} iff $\Cov{\rX, \rY} = \mzero$. \\
+The \emph{correlation} of the random vectors $\rX$ and $\rY$ is a normalized covariance: \\
+$\Cor{\rX,\rY}(i,j) \defeq \frac{\Cov{X_i,Y_j}}{\sqrt{\Var{X_i} \Var{Y_j}}} \in [-1,1]$\\
 \textbf{Variance}: $\Var{\rX} \defeq \Cov{\rX, \rX}$ \\
 \begin{framed}
 \textbf{Properties of variance}:\\
@@ -48,12 +49,14 @@ If prior $p(\vx)$ and posterior $p(\vx \mid \vy)$ from same family of distributi
         $\vmu_{\sA \mid \sB} \defeq \vmu_\sA + \mSigma_{\sA\sB}\inv{\mSigma_{\sB\sB}}(\vx_\sB - \vmu_\sB)$ and \\
         $\mSigma_{\sA \mid \sB} \defeq \mSigma_{\sA\sA} - \mSigma_{\sA\sB}\inv{\mSigma_{\sB\sB}}\mSigma_{\sB\sA}$.
 \end{framed}
-\textbf{Maximum likelihood estimate (MLE)}: $\vthetahat_\MLE \defeq$
- $\underset{\vtheta \in \Theta}{\argmax} p(y_{1:n} \mid \vx_{1:n}, \vtheta) 
-  = \underset{\vtheta \in \Theta}{\argmax} \underbrace{\sum_{i=1}^n \log p(y_i \mid \vx_i, \vtheta)}_{\text{{log-likelihood}}}$ \\
+\textbf{Maximum likelihood estimate (MLE)}: \\
+$\vthetahat_\MLE \defeq$
+ $\underset{\vtheta \in \Theta}{\argmax} p(y_{1:n} \mid \vx_{1:n}, \vtheta)$ \\
+ $ = \underset{\vtheta \in \Theta}{\argmax} \sum_{i=1}^n \log p(y_i \mid \vx_i, \vtheta) $ $ = \argmax \text{ log-likelihood}$ \\
 We will denote the \textbf{negative log-likelihood} by $\ell_\mathrm{nll}(\vtheta; \spD_n)$.
 The MLE is \textbf{consistent} and \textbf{asymptotically normal} if: $\vthetahat_\MLE \convp \opt{\vtheta}$ $\vthetahat_\MLE \convd \N{\opt{\vtheta}}{\mS_n}$ as $n \to \infty$. \\
-The \textbf{{maximum a posteriori estimate} (or MAP estimate)}:   $\vthetahat_\MAP \defeq \argmax_{\vtheta \in \Theta} p(\vtheta \mid \vx_{1:n}, y_{1:n}) 
+\textbf{Maximum a posteriori estimate}: \\
+$\vthetahat_\MAP \defeq \argmax_{\vtheta \in \Theta} p(\vtheta \mid \vx_{1:n}, y_{1:n}) 
   = \argmin_{\vtheta \in \Theta} \underbrace{- \log p(\vtheta)}_{\text{regularization}} + \underbrace{\ell_\mathrm{nll}(\vtheta; \spD_n)}_{\text{quality of fit}}$
 Here, the \textbf{log-prior} $\log p(\vtheta)$ acts as a regularizer.\\
 \begin{framed}
