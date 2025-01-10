@@ -1,7 +1,7 @@
 \section{Model-free Reinforcement Learning}
 Can view TD-learning as SGD on the squared loss $\ell(\vtheta; x, r, x') \defeq \frac{1}{2}\parentheses*{r + \gamma \old{\vtheta}(x') - \vtheta(x)}^2$. \\
 \textbf{Parametric value function approximation}: To scale to large state spaces, learn approximation
-of (action) value function $\V{\vx; \vtheta}$ or $\Q{\vx}{\va; \vtheta}$. For e.g. the parameters $\vtheta$ of a neural network.
+of (action) value function $\V{\vx; \vtheta}$ or $\Q{\vx}{\va; \vtheta}$. E.g., the parameters $\vtheta$ of a neural network.
 \begin{framed}
     \textbf{Q-learning with function approximation}: In state $\vx$, pick action $a$; Observe $\vx'$, reward $r$. Update $\vtheta \gets \vtheta + \alpha_t \delta_\mathrm{B} \vphi(\vx, \va)$, where $\delta_\mathrm{B} \defeq r + \gamma \max_{\vap \in \spA} \Q*{\vxp}{\vap; \old{\vtheta}} - \Q*{\vx}{\va; \vtheta}$.
 \end{framed}
@@ -11,14 +11,16 @@ of (action) value function $\V{\vx; \vtheta}$ or $\Q{\vx}{\va; \vtheta}$. For e.
 \end{framed}
 $\text{$\pi$ is optimal} \iff \forall \vx \in \spX, \va \in \spA : \a[\pi]{\vx}{\va} \leq 0$
 \begin{framed}
-    The \textbf{policy value function} measures the discounted payoff of policy $\pi$: $\j{\pi} \defeq \E[\pi]{G_0} = \E[\pi]{\sum_{t=0}^\infty \gamma^t R_t}$, and the bounded variant: $\j{\pi}[T] \defeq \E[\pi]{G_{0:T}} = \E[\pi]{\sum_{t=0}^{T-1} \gamma^t R_t}$. Abbreviate $\j{\vvarphi} \defeq \j{\pi_\vvarphi}$
+    The \textbf{policy value function} measures the discounted payoff of policy $\pi$: $\j{\pi} \defeq \E[\pi]{G_0} = \E[\pi]{\sum_{t=0}^\infty \gamma^t R_t}$, 
+    and the bounded variant: $\j{\pi}[T] \defeq \E[\pi]{G_{0:T}} = \E[\pi]{\sum_{t=0}^{T-1} \gamma^t R_t}$. \\
+    Abbreviate $\j{\vvarphi} \defeq \j{\pi_\vvarphi}$
 \end{framed}
 \vspace{1mm}
 \begin{framed}
   \textbf{Actor-Critic methods} \\
   \textbf{Actor}: parameterized policy, $\pi(\va \mid \vx; \vvarphi) \eqdef \pi_\vvarphi$ \\
   \textbf{Critic}: value function approximation \\
-   $\q[\pi_\vvarphi]{\vx}{\va} \approx \Q[\pi_\vvarphi]{\vx}{\va; \vtheta}$, abbreviate $\fnQ[\pi_\vvarphi]$ by $\fnQ$.
+   $\q[\pi_\vvarphi]{\vx}{\va} \approx \Q[\pi_\vvarphi]{\vx}{\va; \vtheta}$ abbreviate $\fnQ[\pi_\vvarphi]$ by $\fnQ$.
 \end{framed}
 Use gradient approximation: 
 \tiny{$\grad_\vvarphi \J{\vvarphi} \approx \sum_{t=0}^\infty\E[(\vx_t,\va_t) \sim \pi_\vvarphi]{\gamma^t \Q{\vx_t}{\va_t; \vtheta} \grad_\vvarphi \log \pi_\vvarphi(\va_t \mid \vx_t)}$}

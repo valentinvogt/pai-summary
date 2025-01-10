@@ -5,10 +5,13 @@
     $\vwhat_{\ridge} = \inv{(\transpose{\mX} \mX + \lambda \mI)} \transpose{\mX} \vy$
 \end{framed}
 \textbf{Notable Results}: $\Var{\vwhat_{\ls} \mid \rX} = \sigman^2(\transpose{\rX}\rX)^{-1}$ \\
-A \textbf{Gaussian prior on the weights} $\vw \sim \N{\vzero}{\sigmap^2 \mI}$, yields the posterior distribution: $\log p(\vw \mid \vx_{1:n}, y_{1:n}) = -\frac{1}{2} \brackets*{\transpose{\vw}\mSigma^{-1}\vw - 2\vmu} + \const$, with $\mSigma \defeq \inv{\parentheses*{\sigman^{-2} \transpose{\mX} \mX + \sigmap^{-2} \mI}}$ and $\vmu \defeq \sigman^{-2} \mSigma \transpose{\mX} \vy$. We have $\vw \mid \vx_{1:n}, y_{1:n} \sim \N{\vmu}{\mSigma}$: \textit{Gaussian's with known variance and linear likelihood} are self-conjugate. \\
+A \textbf{Gaussian prior on the weights} $\vw \sim \N{\vzero}{\sigmap^2 \mI}$, yields the posterior distribution: $\log p(\vw \mid \vx_{1:n}, y_{1:n}) = -\frac{1}{2} \brackets*{\transpose{\vw}\mSigma^{-1}\vw - 2\vmu} + c$,
+with $\mSigma \defeq \inv{\parentheses*{\sigman^{-2} \transpose{\mX} \mX + \sigmap^{-2} \mI}}$ and $\vmu \defeq \sigman^{-2} \mSigma \transpose{\mX} \vy$. 
+We have $\vw \mid \vx_{1:n}, y_{1:n} \sim \N{\vmu}{\mSigma}$: \textit{Gaussians with known variance and linear likelihood} are self-conjugate. \\
 MAP: $\vwhat_\MAP = \argmin_\vw \norm{\vy - \mX \vw}_2^2 + \frac{\sigman^2}{\sigmap^2} \norm{\vw}_2^2$, \textit{identical to ridge regression} with $\lambda \defeq \sigman^2 / \sigmap^2$. \\
 A \textbf{Laplace prior} on the weights is equivalent to \textbf{lasso regression} with decay ${\lambda \defeq \sigman^2 / \ell}$. \\
-\textbf{Bayesian inference}: Distribution for a test point $\vxs$ is: $\ys \mid \vxs, \vx_{1:n}, y_{1:n} \sim \N{\transpose{\vmu} \vxs}{\transpose{\vxs} \mSigma \vxs + \sigman^2}$. \\
+\textbf{Bayesian inference} \\
+Distribution for a test point $\vxs$ is: $\ys \mid \vxs, \vx_{1:n}, y_{1:n} \sim \N{\transpose{\vmu} \vxs}{\transpose{\vxs} \mSigma \vxs + \sigman^2}$. \\
 $\Var{\ys \mid \vxs} = \underbrace{\E[\vtheta]{\Var[\ys]{\ys \mid \vxs, \vtheta}}}_{\text{aleatoric uncertainty}} + \underbrace{\Var[\vtheta]{\E[\ys]{\ys \mid \vxs, \vtheta}}}_{\text{epistemic uncertainty}}$.\\
 Aleatoric $\rightarrow$ noise in data; Epistemic $\rightarrow$ noise in model.
 Applying linear regression to non linear functions: apply a non linear transformation $\vphi$ to $\rX$. Define $\mPhi = \vphi(\rX)$, so-called \textbf{Kernel}. With a gaussian prior we get: $\vf \mid \mX \sim \N{\mPhi \E{\vw}}{\mPhi \Var{\vw} \transpose{\mPhi}} = \N{\vzero}{\mK}$, with $\mK = \sigmap^2 \mPhi \transpose{\mPhi}$. We define the \textbf{Kernel-function}: $k(\vx, \vxp) \defeq \sigmap^2 \cdot \transpose{\vphi(\vx)} \vphi(\vxp) = \Cov{f(\vx), f(\vxp)}$.
@@ -16,7 +19,7 @@ Applying linear regression to non linear functions: apply a non linear transform
     \textbf{Linear Kernel}: $k(\vx, \vxp) = l \transpose{\vx} \vxp$ \\
     \textbf{RBF/Gaussian}: $k(\vx, \vxp) = \exp{-\frac{(\vx - \vxp)^2}{2\sigma_p^2}}$ \\
     \textbf{Polynomial Kernel} $k(\vx, \vxp) = (1 + \transpose{\vx} \vxp)^d$ \\
-    \textbf{Laplacian kernel}: $k(\vx, \vxp) = \exp{\left(-\alpha \norm{\vx - \vxp}\right)}$
+    \textbf{Laplacian Kernel}: $k(\vx, \vxp) = \exp{\left(-\alpha \norm{\vx - \vxp}\right)}$
 \end{framed}
 \begin{framed}
     \textbf{Properties of Kernels}:  \\
