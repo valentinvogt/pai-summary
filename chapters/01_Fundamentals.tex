@@ -1,29 +1,29 @@
 \section{Fundamentals}
 \begin{framed}
     \textbf{Useful PDFs:} \\
-    \textbf{Normal}:$\frac{\exp \left(-\frac{1}{2}(\vx - \vmu)^T \Sigma^{-1} (\vx - \vmu) \right)}{\sqrt{(2\pi)^k \det{\Sigma}}}$ \\
+    \textbf{Gaussian}:$\frac{\exp \left(-\frac{1}{2}(\vx - \vmu)^T \Sigma^{-1} (\vx - \vmu) \right)}{\sqrt{(2\pi)^k \det{\Sigma}}}$ \\
+    $(d^2+3d)/2$ storage for $\mu$ and $\Sigma$ \\
+    \textbf{1d Gaussian}: $\frac{1}{\sqrt{2\pi\sigma^2}} \exp\left(-\frac{(x-\mu)^2}{2\sigma^2}\right)$ \\
     \textbf{Beta}: $\Beta[\theta]{\alpha}{\beta} \propto \theta^{\alpha-1} (1-\theta)^{\beta-1}$ \\
     \textbf{Laplace}: $\frac{1}{2l}\exp\left(-\frac{\abs{x - \mu}}{l}\right)$
 \end{framed}
 \begin{framed}
     \textbf{Properties of Expectation:}\\
     $\E{\mA \rX + \vb} = \mA \E{\rX} + \vb $; $ \E{\rX + \rY} = \E{\rX} + \E{\rY}$ \\
-    $\E{\rX\transpose{\rY}} = \E{\rX} \cdot \transpose{\E{\rY}}$ (if independant)\\
-    $\E{\vg(\rX)} = \int_{\rX(\Omega)} \vg(\vx) \cdot p(\vx) \,d\vx$ (if $\vg$ nice and $\rX$ cont.) \\
+    $\E{\rX\transpose{\rY}} = \E{\rX} \cdot \transpose{\E{\rY}}$ (if independent)\\
+    $\E{\vg(\rX)} = \int_{\rX} \vg(\vx) \cdot p(\vx) \,d\vx$ (if $\vg$ nice, $\rX$ cont.) \\
     $\E[\rY]{\E[\rX]{\rX \mid \rY}} = \E{\rX}$ (\textbf{Tower rule})
 \end{framed} 
-Given two RVs $\rX\in\R^n$ and $\rY\in\R^m$, \\ their \textbf{covariance} is defined as \\
 $\Cov{\rX, \rY} \defeq \E{(\rX - \E{\rX})\transpose{(\rY - \E{\rY})}}$ \\
 $\Cov{\mA\rX + \vc, \mB\rY + \vd} = \mA\Cov{\rX,\rY}\transpose{\mB}$ \\
-\emph{Uncorrelated} iff $\Cov{\rX, \rY} = \mzero$. \\
-The \emph{correlation} of the random vectors $\rX$ and $\rY$ is a normalized covariance: \\
+\emph{Uncorrelated} iff $\Cov{\rX, \rY} = \mzero$. Gaussians: uncorrelated $\iff$ independent. \\
 $\Cor{\rX,\rY}(i,j) \defeq \frac{\Cov{X_i,Y_j}}{\sqrt{\Var{X_i} \Var{Y_j}}} \in [-1,1]$\\
 \textbf{Variance}: $\Var{\rX} \defeq \Cov{\rX, \rX}$ \\
 \begin{framed}
 \textbf{Properties of variance}:\\
 $\Var{\mA\rX + \vb} = \mA\Var{\rX}\transpose{\mA}$\\
 $\Var{\rX + \rY} = \Var{\rX} + \Var{\rY} + 2 \Cov{\rX, \rY}$\\
-$\Var{\rX + \rY} = \Var{\rX} + \Var{\rY}$ (if $\rX$, $\rY$ independant)
+$\Var{\rX + \rY} = \Var{\rX} + \Var{\rY}$ (if $\rX$, $\rY$ indep.) \\
 $\Var{\rX} = \E[\rY]{\Var[\rX]{\rX \mid \rY}} + \Var[\rY]{\E[\rX]{\rX \mid \rY}}$ (\textbf{Law of total variance, LOTV})
 \end{framed}
 \textbf{Change of variables formula}
@@ -38,7 +38,7 @@ $p(\vx \mid \vy) = \frac{p(\vy \mid \vx) \cdot p(\vx)}{p(\vy)}$
     \textbf{Conditional likelihood} $p(\vy \mid \vx)$: how likely the observations $\vy$ are under a given value $\vx$. \\
     \textbf{Joint likelihood} $p(\vx, \vy) = p(\vy \mid \vx) p(\vx)$ \\
     \textbf{Marginal likelihood} $p(\vy)$: how likely the observations $\vy$ are across all values of $\vx$. \\
-    \textbf{Marginal likelihood} $p(\vy) = \int_{\rX(\Omega)} p(\vy \mid \vx) \cdot p(\vx) \,d\vx$. 
+    $p(\vy) = \int_{\rX} p(\vy \mid \vx) \cdot p(\vx) \,d\vx$. 
 \end{framed}
 If prior $p(\vx)$ and posterior $p(\vx \mid \vy)$ from same family of distributions, the prior is a \textbf{conjugate prior} to the likelihood $p(\vy \mid \vx)$. The beta distribution is a conjugate prior to a binomial likelihood. \\
 \begin{framed}
@@ -62,10 +62,6 @@ Here, the \textbf{log-prior} $\log p(\vtheta)$ acts as a regularizer.\\
 \begin{framed}
 \textbf{Common regularizers}: \\
  $p(\vtheta) = \N[\vtheta]{\vzero}{\lambda \mI}$ $\rightarrow$ $-\log p(\vtheta) = \frac{\lambda}{2} \norm{\vtheta}_2^2 + \const$ \\
- $p(\vtheta) = \Laplace[\vtheta]{\vzero}{\lambda}$ $\rightarrow$ $-\log p(\vtheta) = \lambda \norm{\vtheta}_1 + \const$ \\
+ $p(\vtheta) = \textrm{Lapl}(\vtheta;\vzero,\lambda) \rightarrow -\log p(\vtheta) = \lambda \norm{\vtheta}_1 + \const$ \\
  uniform prior $\rightarrow$ $\const$ (no regularization)
  \end{framed}
-\begin{framed}
-     \textbf{Expected calibration error}: For $m$ bins: $\ell_{\mathrm{ECE}} \defeq \sum_{m=1}^M \frac{\card{\sB_m}}{n} \abs{\mathrm{freq}(\sB_m) - \mathrm{conf}(\sB_m)}$
- \end{framed}
-

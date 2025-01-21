@@ -1,11 +1,12 @@
 \section{Gaussian Processes}
 \begin{framed}
     A \textbf{Gaussian process} is an infinite set of random variables such that any finite number of them are jointly Gaussian. We use a set $\spX$ to index the collection of random variables.
-    A Gaussian process is characterized by a \textbf{mean function} $\mu : \spX \to \R$ and a \textbf{covariance function} (or \textbf{kernel function}) $k : \spX \times \spX \to \R$ such that for any $\sA \defeq \{\vx_1, \dots, \vx_m\} \subseteq \spX$, we have 
-  $\vf_\sA \defeq \transpose{[f_{\vx_1} \; \cdots \; f_{\vx_m}]} \sim \N{\vmu_\sA}{\mK_{\sA\sA}}$ 
-We write $f \sim \GP{\mu}{k}$.
-In particular, given a mean function, covariance function, and using the homoscedastic noise assumption, 
-  $\ys \mid \vxs, \mu, k \sim \N{\mu(\vxs)}{k(\vxs, \vxs) + \sigman^2}$
+    A GP is characterized by a \textbf{mean function} $\mu : \spX \to \R$ and a \textbf{covariance (kernel) function}) $k : \spX \times \spX \to \R$ such that for any $\sA \defeq \{\vx_1, \dots, \vx_m\} \subseteq \spX$, we have 
+  $\vf_\sA \defeq \transpose{[f_{\vx_1} \; \cdots \; f_{\vx_m}]} \sim \N{\vmu_\sA}{\mK_{\sA\sA}}$ \\
+We write $f \sim \GP{\mu}{k}$. \\
+Under the homoscedastic noise assumption, \\
+  $\ys \mid \vxs, \mu, k \sim \N{\mu(\vxs)}{k(\vxs, \vxs) + \sigman^2}$ \\
+  \vspace{0.15mm}
 \end{framed}
 \begin{framed}
     \textbf{Maximize Marginal Likelihood}: \\
@@ -21,12 +22,13 @@ $f \mid \vx_{1:n}, y_{1:n} \sim \GP{\mu'}{k'}$ where
 • $ \mu'(\vx) \defeq \mu(\vx) + \transpose{\vk_{\vx,\sA}} \inv{(\mK_{\sA\sA} + \sigman^2 \mI)} (\vy_\sA - \vmu_\sA)$ \\
 • $ k'(\vx, \vxp) \defeq k(\vx, \vxp) - \transpose{\vk_{\vx,\sA}} \inv{(\mK_{\sA\sA} + \sigman^2 \mI)} \vk_{\vxp,\sA}$
 GP Regression: $y_{1:n} \mid \vx_{1:n}, \vtheta \sim \N{\vzero}{\mK_{f,\vtheta} + \sigman^2 \mI}$, write $\mK_{\vy,\vtheta} \defeq \mK_{f,\vtheta} + \sigman^2 \mI$, and obtain: $\vthetahat_\MLE = \argmin_{\vtheta} \frac{1}{2} \transpose{\vy} \inv{\mK_{\vy,\vtheta}} \vy + \frac{1}{2} \log \det{\mK_{\vy,\vtheta}}$.
-$\pdv{}{\theta_j} \log p(y_{1:n} \mid \vx_{1:n}, \vtheta) = $ \\
-$\frac{1}{2} \tr{(\valpha \transpose{\valpha} - \inv{\mK_{\vy,\vtheta}}) \pdv{\mK_{\vy,\vtheta}}{\theta_j}}$ \\
-\textbf{Approximations}: Gaussian process need to invert Matrices $\rightarrow$ computational cost of $\BigO{n^3}$. \\ 
+{\tiny $\pdv{}{\theta_j} \log p(y_{1:n} \mid \vx_{1:n}, \vtheta) = \frac{1}{2} \tr{(\valpha \transpose{\valpha} - \inv{\mK_{\vy,\vtheta}}) \pdv{\mK_{\vy,\vtheta}}{\theta_j}}$} \\
+\textbf{Approximations}: GP training \& inference: invert matrix $\BigO{n^3}$. 
+$\rightarrow$ Inducing points: SoR; FITC. Cubic in $n_{\text{ind}}$, linear in $n$. \\
 \textbf{Local method}: When sampling at $\vx$, only condition on samples $\vxp$ that are close, i.e. where $\abs{k(\vx, \vxp)} \geq \tau$ for some $\tau > 0$, instead of all samples. \textbf{Problem:} $\tau$ must be chosen carefully: if $\tau$ is too large, samples become essentially independent. \\
 \textbf{Kernel Approximation}: Construct a low dimensional feature map $\vphi : \R^d \to \R^m$ that approximates the kernel: $k(\vx, \vxp) \approx \transpose{\vphi(\vx)} \vphi(\vxp)$. Then apply Bayesian linear regression $\rightarrow$ time complexity of $\BigO{n m^2 + m^3}$. This can be done with \textbf{Random Fourier features}: a \textit{stationary} kernel $k$ can be interpreted as a function in one variable, and has an associated Fourier transform which we denote by $p(\vomega)$: $k(\vx-\vxp) = \int_{\R^d} p(\vomega) e^{i \transpose{\vomega} (\vx-\vxp)} \,d\vomega$.
 \begin{framed}
-    \textbf{Bochner's Theorem} A continuous Kernel on $\R^d$ is p.s.d iff its Fourier transform $p(\vomega)$ is non-negative.
+    \textbf{Bochner's Thm.}: A continuous kernel on $\R^d$ is p.s.d iff its Fourier transf. $p(\vomega)$ is non-negative.
 \end{framed}
-$\implies$ If continuous and stationary kernel is p.s.d. and scaled correctly then $p(\vomega)$ is a probability distribution named \textbf{spectral density} of $k$. The spectral density can be computed by: $p(\vomega) = \int_{\R^d} k(\vomega) e^{- i 2 \pi \transpose{\vxi} \vomega} \,d\vomega.$ \\ Now write the kernel as an expectation: $k(\vx-\vxp) = \int_{\R^d} p(\vomega) e^{i \transpose{\vomega} (\vx-\vxp)} \,d\vomega = \E[\vomega \sim p]{e^{i \transpose{\vomega}(\vx-\vxp)}}= \transpose{\vz(\vx)} \vz(\vxp)$, where $z_{\vomega,b}(\vx) \defeq \sqrt{2} \cos(\transpose{\vomega} \vx + b)$, and $\vz(\vx) \defeq \frac{1}{\sqrt{m}} \transpose{[z_{\vomega^{(1)},b^{(1)}}(\vx), \dots, z_{\vomega^{(m)},b^{(m)}}(\vx)]}$ is a randomized feature map of Fourier transforms $\vomega^{(i)} \iid p$ and $b^{(i)} \iid \Unif{\brackets{0, 2 \pi}}$. The error probability decays exponentially in $\epsilon$.
+$k$ cont., psd., stat.: $p(\vomega)$ is prob. dist. named \textbf{spectral density} of $k$.
+Computed by: $p(\vomega) = \int_{\R^d} k(\vomega) e^{- i 2 \pi \transpose{\vxi} \vomega} \,d\vomega.$ \\ Now write the kernel as an expectation: $k(\vx-\vxp) = \int_{\R^d} p(\vomega) e^{i \transpose{\vomega} (\vx-\vxp)} \,d\vomega = \E[\vomega \sim p]{e^{i \transpose{\vomega}(\vx-\vxp)}}= \transpose{\vz(\vx)} \vz(\vxp)$, where $z_{\vomega,b}(\vx) \defeq \sqrt{2} \cos(\transpose{\vomega} \vx + b)$, and $\vz(\vx) \defeq \frac{1}{\sqrt{m}} \transpose{[z_{\vomega^{(1)},b^{(1)}}(\vx), \dots, z_{\vomega^{(m)},b^{(m)}}(\vx)]}$ is a randomized feature map of Fourier transforms $\vomega^{(i)} \iid p$ and $b^{(i)} \iid \Unif{\brackets{0, 2 \pi}}$. The error probability decays exponentially in $\epsilon$.

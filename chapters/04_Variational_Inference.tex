@@ -2,7 +2,7 @@
 Idea: approximate the true posterior distribution with a simpler posterior that is easy to sample: \\$p(\vtheta \mid \vx_{1:n}, y_{1:n}) = \frac{1}{Z} p(\vtheta, y_{1:n} \mid \vx_{1:n}) \approx q(\vtheta \mid \vlambda) \eqdef q_\vlambda(\vtheta)$, where $\vlambda$ represents the parameters of the \textbf{variational posterior} $q_\vlambda$.\\
 \textbf{Laplace Approximation}: Idea: find a Gaussian approximation (i.e. second-order Taylor) of the posterior around its mode:
 $q(\vtheta) \defeq \N[\vtheta]{\vthetahat}{\inv{\mLambda}} \propto \exp(\hat{\psi}(\vtheta))$, with $\vthetahat$ the mode (i.e. MAP estimate) and with $\hes$ the Hessian: $\mLambda \defeq - \hes_\psi(\vthetahat) = - \hes_\vtheta \log p(\vtheta \mid \vx_{1:n}, y_{1:n}) \bigl|_{\vtheta = \vthetahat}$. \\
-Perform inference using the variations approximation: $p(\ys \mid \vxs, \vx_{1:n}, y_{1:n})  \approx \int p(\ys \mid \vxs, \vtheta) q_\vlambda(\vtheta) \,d\vtheta$.
+Variatonal inference: $p(\ys \mid \vxs, \vx_{1:n}, y_{1:n})  \approx \int p(\ys \mid \vxs, \vtheta) q_\vlambda(\vtheta) \,d\vtheta$.
 \begin{framed}
     \textbf{Suprise} of an event with prob. $u$: $\S{u} \defeq - \log u$
 \end{framed}
@@ -24,32 +24,47 @@ Observe that the surprise $\S{u}$ is convex in $u$.
     \textbf{KL-divergence}: \\
     $\KL{p}{q} \defeq \crH{p}{q} - \H{p} = \E[\vtheta \sim p]{\log \frac{p(\vtheta)}{q(\vtheta)}}$
 \end{framed}
-It measures the additional expected surprise when observing samples from $p$ that is due to assuming the (wrong) distribution $q$.
+$=$ additional expected surprise when observing samples from $p$ that is due to assuming the (wrong) distribution $q$.
 \begin{framed}
-    \textbf{Properties of KL}:
-    $\KL{p}{q} \geq 0$ (Gibbs); $\KL{p}{q} = 0$ if and only if $p = q$ almost surely and there exist distributions $p$ and $q$ such that $\KL{p}{q} \neq \KL{q}{p}$.
+    \textbf{KL Properties}:
+    $\KL{p}{q} \geq 0$; $\KL{p}{q} = 0 \iff p = q$ almost surely; not symmetric; not a metric; finite if $\textrm{supp}(p) \subseteq \textrm{supp}(q)$.
 \end{framed}
 Note that: $\crH{p}{q} = \H{p} + \KL{p}{q} \geq \H{p}$.\\
 Normal dist. has the \textbf{highest entropy} among all distributions on $\R$ with fixed mean and variance. \\
 $\KL{\Bern{p}}{\Bern{q}} = p \log \frac{p}{q} + (1-p) \log \frac{(1-p)}{(1-q)}$  \\
 \begin{framed}
     \textbf{KL of $d$-dim. Gaussians}: \\
+    \vspace{6pt}
     \begin{align*}
-        \KL{p}{q} = \\
-         \frac{1}{2} \bigg(\mathrm{tr}(\inv{\mSigma_q} \mSigma_p)+ \transpose{(\vmu_p - \vmu_q)} \inv{\mSigma_q} (\vmu_p - \vmu_q) \\
-        - d + \log \frac{\det{\mSigma_q}}{\det{\mSigma_p}}\bigg)
+        \scriptstyle\KL{p}{q} = \frac{1}{2} (\mathrm{tr}(\inv{\mSigma_q} \mSigma_p)+ \transpose{(\vmu_p - \vmu_q)} \inv{\mSigma_q} (\vmu_p - \vmu_q) \\[-1mm]
+        \scriptstyle - d + \log \frac{\det{\mSigma_q}}{\det{\mSigma_p}})
     \end{align*}
 \end{framed}
 \textbf{Forward KL}: $\qs_1 \defeq \argmin_{q \in \spQ} \KL{p}{q}$;\\
+(best Gaussian approx.   to $p$).\\
 \textbf{Reverse KL}: $\qs_2 \defeq \argmin_{q \in \spQ} \KL{q}{p}$.\\
+(Gaussian that is best approximated by $p$).\\
 Reverse KL tends to greedily select the mode and underestimate the variance.
+Equivalent minimizations:
+$\begin{aligned}
+    \begin{aligned}
+        &  \arg \min_q ~
+         \KL{q(\theta)}{p(\theta | y)} \\[-1.5mm]
+        &= \arg \min~
+         \mathbb{E}_{q(\theta)}[\log q(\theta) - \log p(\theta, y)] \\[-1.5mm]
+        &= \arg \min~
+         \KL{q(\theta)}{p(\theta)} - \mathbb{E}_{q(\theta)}[\log p(y | \theta)] \\[-1.5mm]
+        &= \arg \min~
+         \KL{q(\theta)}{p(y | \theta)} - \mathbb{E}_{q(\theta)}[\log p(\theta)].
+    \end{aligned}
+\end{aligned}$
 \vspace{1mm}
 \begin{framed}
-    \textbf{Evidence lower bound} given data $\spD_n$:\\ \\
-
+    \textbf{ELBO} $L(q,p)$ given data $\spD_n$:\\ \\
+        $\argmin_q \KL{q}{p}=\argmax_q L(q,p)$ \\
         $L(q, p) = \underbrace{\log p(y_{1:n} \mid \vx_{1:n})}_{\const} -\ \KL{q}{p(\cdot \mid \vx_{1:n}, y_{1:n})}$ \\
         $= \underbrace{\E[\vtheta \sim q]{\log p(y_{1:n} \mid \vx_{1:n}, \vtheta)}}_{\text{log-likelihood}}\ \underbrace{-\ \KL{q}{p(\cdot)}}_{\text{proximity to prior}}$
 \end{framed}
-The gradient of ELBO is generally intractable. We use the \textbf{reparametrization trick}: For $\vepsilon \sim \phi$ independent of $\vlambda$ and given a differentiable and invertible function $\vg : \R^d \to \R^d$. Let $\vtheta \defeq \vg(\vepsilon; \vlambda)$: $q_\vlambda(\vtheta) = \phi(\vepsilon) \cdot \inv{\abs{\det{\jac_\vepsilon \vg(\vepsilon; \vlambda)}}}$, which yields: $\E[\vtheta \sim q_\vlambda]{\vf(\vtheta)} = \E[\vepsilon \sim \phi]{\vf(\vg(\vepsilon; \vlambda))}$, for a \textit{nice} $\vf$. \\
-For ELBO: $\grad_\vlambda \E[\vtheta \sim q_\vlambda]{\vf(\vtheta)} = \E[\vepsilon \sim \phi]{\grad_\vlambda \vf(\vg(\vepsilon; \vlambda))}$. If we can find $\vg$ and a suitable reference density $\phi$ which is independent of $\vlambda$, we say $q_\vlambda$ is \textbf{reparametrizable}. \\
+The gradient of ELBO is generally intractable. \textbf{Reparametrization trick}: For $\vepsilon \sim \phi$ independent of $\vlambda$ and given a differentiable and invertible function $\vg : \R^d \to \R^d$. Let $\vtheta \defeq \vg(\vepsilon; \vlambda)$: $q_\vlambda(\vtheta) = \phi(\vepsilon) \cdot \inv{\abs{\det{\jac_\vepsilon \vg(\vepsilon; \vlambda)}}}$, which yields: $\E[\vtheta \sim q_\vlambda]{\vf(\vtheta)} = \E[\vepsilon \sim \phi]{\vf(\vg(\vepsilon; \vlambda))}$, for a \textit{nice} $\vf$. \\
+$\Longrightarrow\grad_\vlambda \E[\vtheta \sim q_\vlambda]{\vf(\vtheta)} = \E[\vepsilon \sim \phi]{\grad_\vlambda \vf(\vg(\vepsilon; \vlambda))}$. \\
 \textbf{Gaussian}: $q_\vlambda(\vtheta) \defeq \N[\vtheta]{\vmu}{\mSigma}$; ${\vepsilon \sim \SN}$, set: $\vtheta = \vg(\vepsilon; \vlambda) \defeq \msqrt{\mSigma} \vepsilon + \vmu$, then: $\phi(\vepsilon) = q_\vlambda(\vtheta) \cdot \abs{\det{\msqrt{\mSigma}}}$ and $\vepsilon = \inv{\vg}(\vtheta; \vlambda) = \mSigma^{-\nicefrac{1}{2}}(\vtheta - \vmu)$

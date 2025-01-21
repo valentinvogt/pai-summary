@@ -12,4 +12,8 @@
 \end{framed}
 \textbf{Heteroscedastic Noise}:\\ Use a neural network with 2 outputs $f_1, f_2$, and define: $y \mid \vx, \vtheta \sim \N{\mu(\vx; \vtheta)}{\sigma^2(\vx; \vtheta)}$ where $\mu(\vx; \vtheta) \defeq f_1(\vx; \vtheta)$ and $\sigma^2(\vx; \vtheta) \defeq \exp(f_2(\vx; \vtheta))$.
 $\log p(y_i \mid \vx_i, \vtheta) = \const - \frac{1}{2} \brackets*{\log \sigma^2(\vx_i; \vtheta) + \frac{(y_i - \mu(\vx_i; \vtheta))^2}{\sigma^2(\vx_i; \vtheta)}}$.
-Approximate predictive distribution by sampling from the variational posterior $p(\ys \mid \vxs, \vx_{1:n}, \vy_{1:n}) \approx \E[\theta \sim q_\vlambda]{p(\ys \mid \vxs, \vtheta)}\approx \frac{1}{m} \sum_{i=1}^m p(\ys \mid \vxs, \vtheta^{(i)})$.
+Approximate predictive distribution by sampling from the variational posterior $p(\ys \mid \vxs, \vx_{1:n}, \vy_{1:n}) \approx \E[\theta \sim q_\vlambda]{p(\ys \mid \vxs, \vtheta)}\approx \frac{1}{m} \sum_{i=1}^m p(\ys \mid \vxs, \vtheta^{(i)})$. \\
+\textbf{Calibration}: $M$ bins, $n$ total samples \\
+$\textrm{freq}(B_m)= \frac{1}{|B_m|} \sum_{i \in B_m} \mathbbm{1}[y_i = \hat{y}_i]$, $\textrm{conf}(B_m) = \frac{1}{|B_m|} \sum_{i \in B_m} \max_{c \in \mathcal{C}} p(y_i = c \mid \vx_i, \vtheta)$ \\
+$\textrm{ECE} \stackrel{\cdot}{=} \sum_{m=1}^M \frac{|B_m|}{n} |\textrm{conf}(B_m) - \textrm{freq}(B_m)|$ \\
+$\textrm{MCE} \stackrel{\cdot}{=} \max_{m} |\textrm{conf}(B_m) - \textrm{freq}(B_m)|$ \\

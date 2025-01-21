@@ -1,4 +1,4 @@
-\documentclass[11pt,landscape, a4paper]{extarticle}
+\documentclass[10pt,landscape, a4paper]{extarticle}
 \usepackage{multicol}
 \usepackage{calc}
 \usepackage{xspace}
@@ -30,7 +30,7 @@
 \usepackage{wrapfig}
 %for images
 \usepackage{graphicx}
-\geometry{a4paper, layouthoffset=0mm, margin=0mm, bottom=1.5mm, layoutsize={297mm, 210mm}}
+\geometry{a4paper, layouthoffset=0mm, margin=0mm, top=1mm, bottom=1.5mm, right=1mm, layoutsize={297mm, 210mm}}
 
 \input{commands}
 
@@ -69,6 +69,9 @@
 \definecolor{background_color}{HTML}{7D98A1}
 \def\light#1{{\color{light}#1}}
 
+\setlength{\topskip}{0pt}
+\setlength{\textfloatsep}{10pt plus 1pt minus 1pt} % Adjust figure/text spacing
+
 % -----------------------------------------------------------------------
 \setstretch{-0.6} %Line spacing
 \makeatletter
@@ -76,6 +79,7 @@
 \makeatother
 \begin{document}
 \raggedright
+\raggedbottom
 \footnotesize
 \setlength{\columnseprule}{0.25pt}
 \setlength{\premulticols}{1pt}
@@ -116,6 +120,7 @@
                    enlarge left by=0cm,
                    left=6pt,
                    right=6pt,
+                   top=7pt,
                    boxsep=-2mm]}
 		{\end{tcolorbox}\vspace{0.5mm}}
 
@@ -124,7 +129,7 @@
 \input{chapters/01_Fundamentals}
 \input{chapters/02_Bayesian_Linear_Regression}
 \input{chapters/03_Gaussian_Processes}
-\input{chapters/04_Variantional_Inference}
+\input{chapters/04_Variational_Inference}
 \input{chapters/05_Markov_Chains}
 \input{chapters/06_Bayesian_Deep_Learning}
 \input{chapters/07_Active_Learning}

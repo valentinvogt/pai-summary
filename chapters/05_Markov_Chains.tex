@@ -7,18 +7,19 @@ The state of a MC at $t$ is a probability distribution $\vq_t \in \R^{1 \times \
 \begin{framed}
     A distribution $\pi$ is \textbf{stationary} iff\\ $\pi(x) = \sum_{x' \in S} p(x \mid x') \pi(x')$ equivalently $\vpi = \vpi \mP$
 \end{framed}
-A MC is \textbf{irreducible} if every state is reachable from any state with positive probability.
+An MC is \textbf{irreducible} if every state is reachable from any state with positive probability.
 \begin{framed}
-    A MC is \textbf{ergodic} iff there exists a $t \in \Nat_0$ such that for any $x, x' \in S$ we have: $p^{(t)}(x' \mid x) > 0$. Equivalently:
-    for some $t \in \Nat_0$ all entries of $\mP^t$ are strictly positive \\
-    or that the MC is irreducible and aperiodic.
+    MC is \textbf{ergodic} $\iff$ $\exists t$ s.t. every state
+    can be reached from every other state in exactly $t$ steps $\iff$
+    for some $t \in \Nat_0$ all entries of $\mP^t$ are strictly positive
+    $\iff$ MC is irreducible and aperiodic.
 \end{framed}
 Irreducible MC $\rightarrow$ ergodic MC use: $\mP' = \frac{1}{2}\mP + \frac{1}{2}\mI$
 \begin{framed}
-    An ergodic MC has a unique stat. dist. $\pi$ (with full support) and $\lim_{t\to\infty} q_t = \pi$, independently of $q_0$.
+    An ergodic MC has a unique stat. dist. $\pi$ (with full support) and $\lim_{t\to\infty} q_t = \pi$, for any $q_0$.
 \end{framed}
 \begin{framed}
-    A MC satisfies the \textbf{detailed balance equation} w.r.t. $\pi$ iff $\pi(x) p(x' \mid x) = \pi(x') p(x \mid x')$, for any $x, x' \in S$. We call such a MC \textbf{reversible} w.r.t. $\pi$.
+    An MC satisfies \textbf{detailed balance equation} w.r.t. $\pi$ iff $\pi(x) p(x' \mid x) = \pi(x') p(x \mid x')$, for any $x, x' \in S$. Such an MC is \textbf{reversible} w.r.t. $\pi$.
 \end{framed}
 If MC is reversible w.r.t. $\pi$, then $\pi$ is a stat. dist.
 \begin{framed}
@@ -28,10 +29,12 @@ If MC is reversible w.r.t. $\pi$, then $\pi$ is a stat. dist.
 \textbf{Acceptance distribution (Metropolis-Hastings)}: $\Bern{\alpha(\vxp \mid \vx)}$ where $\alpha(\vxp \mid \vx) \defeq \min \braces*{1, \frac{q(\vxp) r(\vx \mid \vxp)}{q(\vx) r(\vxp \mid \vx)}}$ yields a Markov chain with stationary distribution $p(\vx) = \frac{1}{Z} q(\vx)$.
 \includegraphics[width=0.98\linewidth, trim={0 0 5cm 0}]{images/Metropiolis_Hasting.png}
 \includegraphics[width=0.98\linewidth]{images/Gibbs_Sampling.png} 
-The stationary distribution of the simulated Markov chain is $p(\vx)$.
-A \textbf{Gibbs distribution} is a continuous distribution $p$ whose PDF is of the form $p(\vx) = \frac{1}{Z} \exp(- f(\vx))$. $f$ is also called an \textbf{energy function}.
-When the energy function $f$ is convex, its Gibbs distribution is called \textbf{log-concave distribution}. Can write: $\alpha(\vxp \mid \vx) = \min \braces*{1, \frac{r(\vx \mid \vxp)}{r(\vxp \mid \vx)} \exp(f(\vx) - f(\vxp))}$. \\
-For $p(\vx) \propto \exp(-f(\vx))$: $\S{p(\vx)} = f(\vx) + \log Z$
+Simulates MC w/ stationary dist. $p(\vx)$. \\
+Interpret posterior as \textbf{Gibbs dist.} $p(\vx) = \frac{1}{Z} \exp(- f(\vx))$. Energy function $f$: convex $\Rightarrow$ Gibbs dist. \textbf{log-concave}. Always: $\alpha(\vxp \mid \vx) = \min \braces*{1, \frac{r(\vx \mid \vxp)}{r(\vxp \mid \vx)} \exp(f(\vx) - f(\vxp))}$. \\
+$p(\vtheta \mid \vx_{1:n}, y_{1:n}) = \frac{1}{Z} p(\vtheta) p(y_{1:n} \mid \vx_{1:n}, \vtheta) = $\\
+$ \frac{1}{Z} \exp(\log p(\vtheta) p(y_{1:n} \mid \vx_{1:n}, \vtheta)) = \frac{1}{Z} \exp(-f(\vtheta))$.
 \begin{framed}
-    \textbf{Langevin Dynamics}: Shift the proposal distribution perpendicularly to the gradient of the energy function: $r(\vxp \mid \vx) = \N[\vxp]{\vx - \eta_t \grad f(\vx)}{2 \eta_t \mI}$.
+    \textbf{Langevin Dynamics}: converges for $\vtheta_t \sim t^{-\nicefrac{1}{3}}$. \\
+    $\vtheta_{t+1} = \vtheta_t - \eta_t \nabla f(\vtheta_t) + \varepsilon_t, \quad \varepsilon \sim \N{\vzero}{\mI}$ \\
 \end{framed}
+Alt.: $\vtheta \mathrel{+}= \eta (\nabla \log p(\vtheta) + \Sigma_i \nabla \log p(y_i \mid \vx_i, \vtheta)) + \varepsilon$.
