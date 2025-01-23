@@ -27,8 +27,9 @@ If MC is reversible w.r.t. $\pi$, then $\pi$ is a stat. dist.
     $\frac{1}{n} \sum_{i=1}^n f(x_i) \almostsurely \sum_{x \in S} \pi(x) f(x) = \E[x \sim \pi]{f(x)}$, for $n\to\infty$ where $x_i \sim X_i \mid x_{i-1}$.
 \end{framed}
 \textbf{Acceptance distribution (Metropolis-Hastings)}: $\Bern{\alpha(\vxp \mid \vx)}$ where $\alpha(\vxp \mid \vx) \defeq \min \braces*{1, \frac{q(\vxp) r(\vx \mid \vxp)}{q(\vx) r(\vxp \mid \vx)}}$ yields a Markov chain with stationary distribution $p(\vx) = \frac{1}{Z} q(\vx)$.
-\includegraphics[width=0.98\linewidth, trim={0 0 5cm 0}]{images/Metropiolis_Hasting.png}
-\includegraphics[width=0.98\linewidth]{images/Gibbs_Sampling.png} 
+\includegraphics[width=0.95\linewidth, trim={0 0 5cm 0}]{images/Metropiolis_Hasting.png}
+\vspace{-2mm}
+\includegraphics[width=0.95\linewidth]{images/Gibbs_Sampling.png} 
 Simulates MC w/ stationary dist. $p(\vx)$. \\
 Interpret posterior as \textbf{Gibbs dist.} $p(\vx) = \frac{1}{Z} \exp(- f(\vx))$. Energy function $f$: convex $\Rightarrow$ Gibbs dist. \textbf{log-concave}. Always: $\alpha(\vxp \mid \vx) = \min \braces*{1, \frac{r(\vx \mid \vxp)}{r(\vxp \mid \vx)} \exp(f(\vx) - f(\vxp))}$. \\
 $p(\vtheta \mid \vx_{1:n}, y_{1:n}) = \frac{1}{Z} p(\vtheta) p(y_{1:n} \mid \vx_{1:n}, \vtheta) = $\\

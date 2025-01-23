@@ -1,4 +1,4 @@
-\documentclass[10pt,landscape, a4paper]{extarticle}
+\documentclass[11pt,landscape, a4paper]{extarticle}
 \usepackage{multicol}
 \usepackage{calc}
 \usepackage{xspace}
@@ -30,7 +30,7 @@
 \usepackage{wrapfig}
 %for images
 \usepackage{graphicx}
-\geometry{a4paper, layouthoffset=0mm, margin=0mm, top=1mm, bottom=1.5mm, right=1mm, layoutsize={297mm, 210mm}}
+\geometry{a4paper, layouthoffset=0mm, margin=0mm, top=0.25mm, bottom=1mm, right=1mm, layoutsize={297mm, 210mm}}
 
 \input{commands}
 
@@ -71,7 +71,7 @@
 
 \setlength{\topskip}{0pt}
 \setlength{\textfloatsep}{10pt plus 1pt minus 1pt} % Adjust figure/text spacing
-
+\clubpenalty = 0
 % -----------------------------------------------------------------------
 \setstretch{-0.6} %Line spacing
 \makeatletter
@@ -130,6 +130,7 @@
 \input{chapters/02_Bayesian_Linear_Regression}
 \input{chapters/03_Gaussian_Processes}
 \input{chapters/04_Variational_Inference}
+\vspace{-1mm}
 \input{chapters/05_Markov_Chains}
 \input{chapters/06_Bayesian_Deep_Learning}
 \input{chapters/07_Active_Learning}
